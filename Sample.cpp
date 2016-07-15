@@ -207,7 +207,7 @@ int main(int argc, TCHAR* argv[])
 
                      
             //send over processed data via named pipe
-            temp = doubleToString(objDetection1(depth3d));
+            temp = doubleToString(objDetection2(depth3d));
 
             dwMode = PIPE_READMODE_MESSAGE;
             fSuccess = SetNamedPipeHandleState(

@@ -17,7 +17,7 @@ double objDetection(Mat3f data); /**basical averaging filter taking the center 6
 double objDetection1(Mat3f data);/**return the average depth of points over limit if there are over limit_cap amount of data points over limit, 
                                  otherwise returns the average depth not over limit **/
 
-double objDetection2(Mat3f data);/**divide the data into many different sets and return the average depth of the points over limit if a set has more than 30 samples over limit, 
+double objDetection2(Mat3f data);/**divide the data into many different sets and return the average depth of the points over limit if a set has more than x samples over limit, 
                                  otherwise returns the average depth not over limit **/
 
 double objDetection3(Mat3f data);/**search over the data and look for object/data point cluster thats over limit with size over x using DBSCAN, then returns the average depth of the data point cluster,

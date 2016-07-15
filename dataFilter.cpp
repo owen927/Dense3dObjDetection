@@ -1,6 +1,6 @@
 #include "dataFilter.h"
-int limit = 1400;
-int limit_cap = 45;
+int limit = 800;
+int limit_cap = 500;
 
 double objDetection(Mat3f data)
 {
@@ -59,7 +59,7 @@ double objDetection1(Mat3f data)
     average_overlimt_depth = z_overlimit/overlimit_count;
   
 
-    if (overlimit_count > 1000)
+    if (overlimit_count > limit_cap)//1000works atm
     {
         printf("Average Over limit Center Depth: %f\n", average_overlimt_depth);
         return average_overlimt_depth;
@@ -91,7 +91,7 @@ double objDetection2(Mat3f data)
     
     while (y_count < 240)
     {
-        for (int w = x_count; w < x_count+x_inc; w++)
+        for (int w = x_count; w < 320; w++)
         {
             for (int h = y_count; h < y_count+y_inc; h++)
             {
@@ -103,7 +103,7 @@ double objDetection2(Mat3f data)
                     if (data[h][w][2] <= limit)
                     {
                         z_overlimit_temp += data[h][w][2];
-                        overlimit_count++;
+                        overlimit_count_temp++;
                     }
 
                 }
@@ -111,8 +111,14 @@ double objDetection2(Mat3f data)
             }
             x_count += x_inc;
         }
+    
+        if (z_overlimit == 0)
+        {
+                        z_overlimit = z_overlimit_temp;
+            overlimit_count = overlimit_count_temp;
+        }
 
-        if (z_overlimit_temp > z_overlimit && overlimit_count_temp > limit_cap)
+        if (z_overlimit_temp < z_overlimit && overlimit_count_temp >overlimit_count)
         {
             z_overlimit = z_overlimit_temp;
             overlimit_count = overlimit_count_temp;
@@ -121,17 +127,26 @@ double objDetection2(Mat3f data)
         x_count = 0;
         y_count += y_inc;
         z_overlimit_temp = 0;
-        overlimit_count = 0;
+        overlimit_count_temp = 0;
     }
-    average_depth = z / count;
-    average_overlimt_depth = z_overlimit/
-    printf("Average Center Depth: %f\n", average_depth);
-    printf("Average overlimit depth: %f\n", average_overlimt_depth);
+    
+   
 
     if (overlimit_count > limit_cap)
+    {
+        average_overlimt_depth = z_overlimit / overlimit_count;
+        printf("Average overlimit depth: %f\n", average_overlimt_depth);
         return average_overlimt_depth;
+    
+    }
     else
+    {
+      
+        average_depth = z / count;
+        printf("Average Center Depth: %f\n", average_depth);
         return average_depth;
+
+    }
 }   
 
 double objDetection3(Mat3f data) //wip
